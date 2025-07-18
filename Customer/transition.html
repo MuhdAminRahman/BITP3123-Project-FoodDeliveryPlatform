@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyBite - Loading</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            font-family: 'Arial', sans-serif;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .transition-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: white;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out 0.3s forwards;
+        }
+
+        .slogan {
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out 0.5s forwards;
+            margin-bottom: 3rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .drone-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 3rem;
+        }
+
+        .drone {
+            width: 120px;
+            height: 60px;
+            background-color: #fff;
+            border-radius: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: droneAppear 1.5s ease-out 0.8s forwards, droneFloat 4s ease-in-out 2.3s infinite;
+        }
+
+        .drone:before, .drone:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 5px;
+            background-color: #2563eb;
+            border-radius: 2px;
+            top: -10px;
+        }
+
+        .drone:before {
+            left: 20px;
+        }
+
+        .drone:after {
+            right: 20px;
+        }
+
+        .propeller {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, 0.7);
+            animation: spin 1s linear infinite;
+        }
+
+        .propeller-1 {
+            top: -25px;
+            left: 15px;
+        }
+
+        .propeller-2 {
+            top: -25px;
+            right: 15px;
+        }
+
+        .propeller-3 {
+            bottom: -25px;
+            left: 15px;
+        }
+
+        .propeller-4 {
+            bottom: -25px;
+            right: 15px;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1s forwards;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0;
+            background-color: white;
+            border-radius: 2px;
+            transition: width 4s ease-out;
+        }
+
+        .continue-btn {
+            padding: 12px 30px;
+            background-color: white;
+            color: #2563eb;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out 1.5s forwards;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(20px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes droneAppear {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+            }
+            70% {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        @keyframes droneFloat {
+            0%, 100% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            25% {
+                transform: translate(-50%, -53%) rotate(2deg);
+            }
+            75% {
+                transform: translate(-50%, -47%) rotate(-2deg);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .slogan {
+                font-size: 1rem;
+            }
+            
+            .drone-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .drone {
+                width: 90px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="transition-container">
+        <h1 class="logo">SKYBITE</h1>
+        <p class="slogan">Elevating your digital experience</p>
+        
+        <div class="drone-container">
+            <div class="drone">
+                <div class="propeller propeller-1"></div>
+                <div class="propeller propeller-2"></div>
+                <div class="propeller propeller-3"></div>
+                <div class="propeller propeller-4"></div>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <button class="continue-btn" id="continueBtn">GO TO LOGIN PAGE</button>
+    </div>
+
+    <script>
+        // Animate progress bar
+        document.addEventListener('DOMContentLoaded', function() {
+            const progress = document.getElementById('progress');
+            progress.style.width = '100%';
+            
+            // Create floating particles
+            for (let i = 0; i < 20; i++) {
+                createParticle();
+            }
+            
+            // Automatically redirect after 5 seconds or when button is clicked
+            setTimeout(() => {
+                document.getElementById('continueBtn').click();
+            }, 5000);
+            
+            document.getElementById('continueBtn').addEventListener('click', function() {
+                window.location.href = 'main.html'; // Change to your main page URL
+            });
+        });
+        
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random size
+            const size = Math.random() * 5 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Random position
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            
+            // Random animation
+            const duration = Math.random() * 10 + 5;
+            particle.style.animation = `float ${duration}s linear infinite`;
+            
+            document.body.appendChild(particle);
+            
+            // Set animation styles
+            const keyframes = `
+                @keyframes float {
+                    0% {
+                        transform: translate(0, 0);
+                        opacity: 0;
+                    }
+                    10% {
+                        opacity: 1;
+                    }
+                    90% {
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px);
+                        opacity: 0;
+                    }
+                }
+            `;
+            
+            const styleSheet = document.createElement('style');
+            styleSheet.type = 'text/css';
+            styleSheet.innerText = keyframes;
+            document.head.appendChild(styleSheet);
+            
+            // Remove particle after animation completes
+            setTimeout(() => {
+                particle.remove();
+                createParticle();
+            }, duration * 1000);
+        }
+    </script>
+</body>
+</html>
