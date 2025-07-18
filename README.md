@@ -1,5 +1,5 @@
 # BITP3123-Project-FoodDeliveryPlatform
-##**Technical Documentation: Food Delivery Platform**
+## **Technical Documentation: Food Delivery Platform**
 
 ### **Introduction**
 
