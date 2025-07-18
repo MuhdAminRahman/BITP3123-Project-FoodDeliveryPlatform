@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order - SkyBite</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --secondary: #10b981;
+      --dark: #1f2937;
+      --light: #f9fafb;
+      --gray: #6b7280;
+      --success: #059669;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f3f4f6;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 150px;
+      height: 150px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -30px;
+      width: 100px;
+      height: 100px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tagline {
+      font-size: 1rem;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .order-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+
+    select, textarea, input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      background-color: white;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    select:focus, textarea:focus, input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .food-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .food-card {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    .food-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      border-color: var(--primary);
+    }
+
+    .food-image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .food-info {
+      padding: 1rem;
+    }
+
+    .food-name {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .food-desc {
+      color: var(--gray);
+      font-size: 0.875rem;
+    }
+
+    .price {
+      font-weight: 600;
+      color: var(--primary);
+      margin-top: 0.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .btn-block {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+    }
+
+    .delivery-info {
+      margin-top: 2rem;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 1.5rem;
+    }
+
+    .form-header {
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .form-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #eef2ff;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--gray);
+      font-size: 0.875rem;
+      background-color: white;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .confirmation-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      padding: 2rem;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-icon {
+      width: 60px;
+      height: 60px;
+      background-color: #d1fae5;
+      color: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-footer {
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .food-options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Place Your Order</h1>
+    <p class="tagline">Delicious food delivered straight to your door</p>
+  </header>
+
+  <main>
+    <div class="order-card">
+      <div class="form-header">
+        <div class="form-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-utensils">
+            <path d="M11 9V2H6v7H2v12h12V9h-3zm4 0V2h5v7h-5z"/>
+          </svg>
+        </div>
+        <h2>Select Your Meal</h2>
+      </div>
+
+      <div class="form-group">
+        <div class="food-options">
+          <div class="food-card">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8feada54-917a-4c6b-95db-d434aeef26f1.png" alt="Signature Burger" class="food-image">
+            <div class="food-info">
+              <div class="food-name">Signature Burger</div>
+              <div class="food-desc">Beef patty with fresh vegetables and special sauce</div>
+              <div class="price">$12.99</div>
+              <input type="number" min="0" value="0" class="qty-input">
+            </div>
+          </div>
+
+          <div class="food-card">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/19ab5e73-662c-4856-8f98-1240350d86fb.png" alt="Garden Salad" class="food-image">
+            <div class="food-info">
+              <div class="food-name">Garden Salad</div>
+              <div class="food-desc">Mixed greens with seasonal vegetables and dressing</div>
+              <div class="price">$9.99</div>
+              <input type="number" min="0" value="0" class="qty-input">
+            </div>
+          </div>
+
+          <div class="food-card">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ea852d10-07d5-4e66-a269-c48d20b55205.png" alt="Sushi Combo" class="food-image">
+            <div class="food-info">
+              <div class="food-name">Sushi Combo</div>
+              <div class="food-desc">Fresh selection of nigiri and California rolls</div>
+              <div class="price">$15.99</div>
+              <input type="number" min="0" value="0" class="qty-input">
+            </div>
+          </div>
+
+          <div class="food-card drink-option">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2bd279c9-159d-4a17-8d72-9b9d6984bd89.png" alt="Cola Drink" class="food-image">
+            <div class="food-info">
+              <div class="food-name">Cola</div>
+              <div class="food-desc">Refreshing carbonated beverage</div>
+              <div class="price">$2.99</div>
+              <input type="number" min="0" value="0" class="qty-input">
+            </div>
+          </div>
+
+          <div class="food-card drink-option">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5f91a41a-16ba-40e3-b942-945a715acd41.png" alt="Lemonade" class="food-image">
+            <div class="food-info">
+              <div class="food-name">Lemonade</div>
+              <div class="food-desc">Fresh squeezed with real lemons</div>
+              <div class="price">$3.49</div>
+              <input type="number" min="0" value="0" class="qty-input">
+            </div>
+          </div>
+
+          <div class="food-card">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b56769ff-e095-4463-97b9-abe47ecbb7a5.png" alt="Pepperoni Pizza" class="food-image">
+            <div class="food-info">
+              <div class="food-name">Pepperoni Pizza</div>
+              <div class="food-desc">Classic pizza with mozzarella and pepperoni</div>
+              <div class="price">$14.99</div>
+              <input type="number" min="0" value="0" class="qty-input">
+            </div>
+          </div>
+
+          <div class="food-card">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/859d3e72-46c6-4311-895e-308e5a3ddbe0.png" alt="Spaghetti Carbonara" class="food-image">
+            <div class="food-info">
+              <div class="food-name">Spaghetti Carbonara</div>
+              <div class="food-desc">Creamy pasta with bacon and parmesan</div>
+              <div class="price">$11.99</div>
+              <input type="number" min="0" value="0" class="qty-input">
+            </div>
+          </div>
+
+          <div class="food-card drink-option">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e56842dd-a113-44a0-8eab-d93c5993c6da.png" alt="Iced Tea" class="food-image">
+            <div class="food-info">
+              <div class="food-name">Iced Tea</div>
+              <div class="food-desc">Refreshing tea served cold</div>
+              <div class="price">$2.49</div>
+              <input type="number" min="0" value="0" class="qty-input">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="delivery-info">
+        <div class="form-header">
+          <div class="form-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <h2>Delivery Information</h2>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Your full name">
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="Your contact number">
+        </div>
+
+        <div class="form-group">
+          <label for="address">Delivery Address</label>
+          <textarea id="address" name="address" placeholder="Enter your complete address with apartment number, floor, etc."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Special Instructions</label>
+          <textarea id="notes" name="notes" placeholder="Any special delivery instructions or dietary restrictions"></textarea>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+        <button class="btn" onclick="window.history.back()" style="background: var(--gray)">Back</button>
+        <button class="btn btn-primary" onclick="submitOrder()" style="flex-grow: 1">Place Order ($<span id="totalAmount">0.00</span>)</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 SkyBite. All rights reserved.</p>
+  </footer>
+
+  <div class="confirmation-modal" id="confirmationModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2>Order Confirmed!</h2>
+      </div>
+      <div class="modal-body">
+        <p>Your order has been successfully placed. Our chef is preparing your meal with care.</p>
+        <p class="order-details" id="orderDetails"></p>
+        <p>Estimated delivery time: <strong>30-45 minutes</strong></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal()">Got it!</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const prices = {
+      'burger': 12.99,
+      'salad': 9.99,
+      'sushi': 15.99,
+      'cola': 2.99,
+      'lemonade': 3.49,
+      'pizza': 14.99,
+      'pasta': 11.99,
+      'icedtea': 2.49
+    };
+
+    // Calculate total from all quantity inputs
+    function calculateTotal() {
+      let total = 0;
+      document.querySelectorAll('.food-card').forEach(card => {
+        const foodId = getFoodIdFromCard(card);
+        const qtyInput = card.querySelector('.qty-input');
+        const qty = parseInt(qtyInput.value) || 0;
+        
+        if (qty > 0 && prices[foodId]) {
+          total += prices[foodId] * qty;
+        }
+      });
+      return total.toFixed(2);
+    }
+
+    // Update the displayed total
+    function updateTotal() {
+      document.getElementById('totalAmount').textContent = calculateTotal();
+    }
+
+    // Get food ID from card element
+    function getFoodIdFromCard(card) {
+      // Since we removed onclick handlers, we'll use the food name
+      const foodNameElement = card.querySelector('.food-name');
+      if (!foodNameElement) return null;
+      
+      const foodName = foodNameElement.textContent.toLowerCase().replace(/\s+/g, '');
+      return Object.keys(prices).find(key => 
+        key.toLowerCase() === foodName ||
+        foodName.includes(key.toLowerCase())
+      );
+    }
+
+    // Handle order submission
+    function submitOrder() {
+      const orderItems = [];
+      let hasItems = false;
+      
+      document.querySelectorAll('.food-card').forEach(card => {
+        const foodId = getFoodIdFromCard(card);
+        const qtyInput = card.querySelector('.qty-input');
+        const qty = parseInt(qtyInput.value) || 0;
+        
+        if (qty > 0 && foodId && prices[foodId]) {
+          hasItems = true;
+          const foodName = card.querySelector('.food-name').textContent;
+          const itemPrice = prices[foodId];
+          const itemTotal = (itemPrice * qty).toFixed(2);
+          
+          orderItems.push(`${qty}x ${foodName} ($${itemPrice.toFixed(2)} each) = $${itemTotal}`);
+        }
+      });
+      
+      if (!hasItems) {
+        alert('Please enter quantities for at least one food item');
+        return;
+      }
+      
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      
+      if (!name || !phone || !address) {
+        alert('Please fill in all required fields');
+        return;
+      }
+      
+      const orderTotal = calculateTotal();
+      const notes = document.getElementById('notes').value.trim();
+      
+      document.getElementById('orderDetails').innerHTML = `
+        <strong>Order Summary:</strong><br>
+        ${orderItems.join('<br>')}<br><br>
+        <strong>Subtotal: $${orderTotal}</strong><br>
+        <strong>Delivery Fee: $2.99</strong><br>
+        <strong>Total: $${(parseFloat(orderTotal) + 2.99).toFixed(2)}</strong><br><br>
+        <strong>Delivery To:</strong><br>
+        ${name}<br>
+        ${address}<br><br>
+        <strong>Contact:</strong> ${phone}<br><br>
+        ${notes ? '<strong>Notes:</strong><br>' + notes : ''}
+      `;
+      
+      document.getElementById('confirmationModal').style.display = 'flex';
+    }
+    
+    // Close the confirmation modal
+    function closeModal() {
+      document.getElementById('confirmationModal').style.display = 'none';
+      window.location.href = "payment.html"; 
+    }
+    
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set up quantity change handlers
+      document.querySelectorAll('.qty-input').forEach(input => {
+        input.addEventListener('input', updateTotal);
+      });
+      
+      // Initialize with $0.00 total
+      updateTotal();
+    });
+  </script>
+</body>
+</html>
