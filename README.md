@@ -135,6 +135,8 @@ This document describes the database schema for a Food Delivery Platform, includ
 relationships, and field definitions. The database supports food ordering, delivery tracking,
 
 payment processing, and user management.
+
+
 <img width="673" height="1016" alt="Food_Delivery_Platform" src="https://github.com/user-attachments/assets/3be8d039-05a9-4a9c-94c9-6184e2c930d0" />
 
 
