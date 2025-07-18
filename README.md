@@ -1,7 +1,7 @@
 # BITP3123-Project-FoodDeliveryPlatform
-**Technical Documentation: Food Delivery Platform**
+##**Technical Documentation: Food Delivery Platform**
 
-# **Introduction**
+### **Introduction**
 
 **Universiti Teknikal Malaysia Melaka**
 
@@ -19,7 +19,7 @@
 | MUHAMMAD DANIAL HAKIM BIN MOHD SAOFI | B032320048        |
 
 
-# **Project Overview**
+### **Project Overview**
 
 The Food Delivery Platform is a comprehensive solution designed to connect customers with local
 restaurants and delivery partners. The system enables customers to browse menus, place orders,
@@ -53,7 +53,7 @@ o Targeted advertising opportunities
     o **Map Services** (Google Maps API): For delivery tracking and route optimization
 
 
-# **System Architecture**
+### **System Architecture**
 
 **High-Level Diagram**
 
