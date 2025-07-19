@@ -11,7 +11,6 @@ import com.fooddeliveryplatform.util.PasswordUtil;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import java.io.IOException;
@@ -23,6 +22,13 @@ public class AuthHandler implements HttpHandler {
         try {
             if ("POST".equals(exchange.getRequestMethod())) {
                 handleAuthRequest(exchange);
+            }
+            else if ("OPTIONS".equals(exchange.getRequestMethod())) {
+                exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+                exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
+                exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "*");
+                exchange.sendResponseHeaders(204, -1);
+                return;
             } else {
                 sendResponse(exchange, 405, "Method Not Allowed");
             }
@@ -31,30 +37,31 @@ public class AuthHandler implements HttpHandler {
         }
     }
 
-    /* Example request body for authentication:
-        To login:
-        POST /api/auth
-        Content-Type: application/json
-        {
-            "action": "customerlogin",
-            "username": "testuser",
-            "password": "securepassword123"
-        }
-
-        To register a new user:
+    /*
+     * Example request body for authentication:
+     * To login:
      * POST /api/auth
-        Content-Type: application/json
-        {
-            "action": "customerregister",
-            "username": "newuser",
-            "email": "test1@test.com",
-            "password": "newpassword123",
-            "role": "CUSTOMER",
-            "fullName": "New User",
-            "phone": "1234567890",
-            "address": "123 New Street"
-        }
-    */
+     * Content-Type: application/json
+     * {
+     * "action": "customerlogin",
+     * "username": "testuser",
+     * "password": "securepassword123"
+     * }
+     * 
+     * To register a new user:
+     * POST /api/auth
+     * Content-Type: application/json
+     * {
+     * "action": "customerregister",
+     * "username": "newuser",
+     * "email": "test1@test.com",
+     * "password": "newpassword123",
+     * "role": "CUSTOMER",
+     * "fullName": "New User",
+     * "phone": "1234567890",
+     * "address": "123 New Street"
+     * }
+     */
     private void handleAuthRequest(HttpExchange exchange) throws IOException {
         JsonObject request = JsonUtils.parseRequest(exchange);
         String action = request.getString("action", "");
@@ -92,10 +99,10 @@ public class AuthHandler implements HttpHandler {
         }
         String token = JwtUtil.generateToken(user.getUsername(), user.getRole().toString());
         JsonObject response = Json.createObjectBuilder()
-            .add("token", token)
-            .add("user", user.toJson())
-            .build();
-        
+                .add("token", token)
+                .add("user", user.toJson())
+                .build();
+
         sendJsonResponse(exchange, 200, response.toString());
     }
 
@@ -123,9 +130,9 @@ public class AuthHandler implements HttpHandler {
         }
         String token = JwtUtil.generateToken(user.getUsername(), user.getRole().toString());
         JsonObject response = Json.createObjectBuilder()
-            .add("token", token)
-            .add("user", user.toJson())
-            .build();
+                .add("token", token)
+                .add("user", user.toJson())
+                .build();
         sendJsonResponse(exchange, 200, response.toString());
     }
 
@@ -153,37 +160,39 @@ public class AuthHandler implements HttpHandler {
     /*
      * Handles restaurant registration.
      * This method expects a JSON request body with restaurant and user details.
-     * It creates a new restaurant and user, sets the user as the owner of the restaurant,
+     * It creates a new restaurant and user, sets the user as the owner of the
+     * restaurant,
      * and saves both to the database.
      * It also hashes the user's password before saving.
      * If the username or password is missing, it responds with a 400 Bad Request.
      * If the username already exists, it responds with a 400 Bad Request.
      * If successful, it responds with a 201 Created status.
      * * @param exchange The HTTP exchange containing the request and response.
-     * * @param request The JSON request object containing restaurant and user details.
+     * * @param request The JSON request object containing restaurant and user
+     * details.
      * * @throws IOException If an I/O error occurs while processing the request.
      * * Example request body for restaurant registration:
      * {
-            "action": "restaurantregister",
-            "username": "restaurantowner",
-            "address": "123 Restaurant St",
-            "email": "restaurant@test.com",
-            "fullName": "Restaurant Owner",
-            "isActive": 1,
-            "password": "securepassword123",
-            "phone": "1234567890",
-            "role" : "RESTAURANT",
-            "closingTime": "22:00",
-            "deliveryRadius": 5,
-            "description": "Best restaurant in town",
-            "logoUrl": "http://example.com/logo.png",
-            "name": "Best Restaurant",
-            "openingTime": "10:00",
-            "isActive2": 1
-        }
+     * "action": "restaurantregister",
+     * "username": "restaurantowner",
+     * "address": "123 Restaurant St",
+     * "email": "restaurant@test.com",
+     * "fullName": "Restaurant Owner",
+     * "isActive": 1,
+     * "password": "securepassword123",
+     * "phone": "1234567890",
+     * "role" : "RESTAURANT",
+     * "closingTime": "22:00",
+     * "deliveryRadius": 5,
+     * "description": "Best restaurant in town",
+     * "logoUrl": "http://example.com/logo.png",
+     * "name": "Best Restaurant",
+     * "openingTime": "10:00",
+     * "isActive2": 1
+     * }
      */
     private void handleRestaurantRegister(HttpExchange exchange, JsonObject request) throws IOException {
-        //System.out.println("Handling restaurant registration: " + request);
+        // System.out.println("Handling restaurant registration: " + request);
 
         RestaurantDao restaurantDao = new RestaurantDao();
         Restaurant restaurant = Restaurant.fromJson(request);
@@ -211,12 +220,16 @@ public class AuthHandler implements HttpHandler {
         System.out.println("Restaurant registered successfully: " + restaurant.getName());
         sendResponse(exchange, 201, "Restaurant registered successfully");
     }
-    
+
     private void sendJsonResponse(HttpExchange exchange, int statusCode, String response) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "*");
+
         sendResponse(exchange, statusCode, response);
     }
-    
+
     private void sendResponse(HttpExchange exchange, int statusCode, String response) throws IOException {
         exchange.sendResponseHeaders(statusCode, response.length());
         try (OutputStream os = exchange.getResponseBody()) {

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <script src="auth.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome, <span id="username"></span></h1>
+        <button id="logoutBtn">Logout</button>
+    </header>
+    
+    <main>
+        <!-- Your dashboard content -->
+    </main>
+
+    <script>
+        // Check authentication
+        if (!AuthService.isAuthenticated()) {
+            window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.pathname);
+        }
+        
+        // Display user info
+        const user = AuthService.getCurrentUser();
+        document.getElementById('username').textContent = user.username;
+        
+        // Logout button
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            AuthService.logout();
+        });
+        
+        // Example of authenticated API call
+        async function loadUserData() {
+            try {
+                const response = await AuthService.authFetch(
+                    `http://localhost:8000/api/users/${user.userId}`
+                );
+                const data = await response.json();
+                console.log('User data:', data);
+                // Display data in your UI
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+        
+        loadUserData();
+    </script>
+</body>
+</html>

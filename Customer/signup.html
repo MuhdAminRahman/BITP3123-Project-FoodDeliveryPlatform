@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Join Our Community</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .form-container {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .input-focused {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .password-toggle {
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        .strength-meter {
+            height: 4px;
+            background-color: #e2e8f0;
+            margin-top: 4px;
+            border-radius: 2px;
+        }
+        .strength-meter-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 2px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full">
+        <div class="text-center mb-10">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7d573379-eb40-4354-8444-506e2735e6e9.png" alt="Company logo with clean modern typography in a deep blue color" class="mx-auto mb-4 h-10">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Create your account</h1>
+            <p class="text-gray-600">Join our community and get started in minutes</p>
+        </div>
+
+        <div class="form-container bg-white rounded-xl p-8">
+            <form id="signupForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First name</label>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="firstName" 
+                                name="firstName" 
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+                                placeholder="John"
+                                onfocus="this.parentNode.classList.add('input-focused')"
+                                onblur="this.parentNode.classList.remove('input-focused')"
+                            >
+                            <div class="error-message text-red-500 text-xs mt-1"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last name</label>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="lastName" 
+                                name="lastName" 
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+                                placeholder="Doe"
+                                onfocus="this.parentNode.classList.add('input-focused')"
+                                onblur="this.parentNode.classList.remove('input-focused')"
+                            >
+                            <div class="error-message text-red-500 text-xs mt-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+                    <div class="relative">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
+                            placeholder="john@example.com"
+                            onfocus="this.parentNode.classList.add('input-focused')"
+                            onblur="this.parentNode.classList.remove('input-focused'); validateEmail(this)"
+                        >
+                        <div class="error-message text-red-500 text-xs mt-1"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            required
+                            minlength="8"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 pr-10"
+                            placeholder="••••••••"
+                            oninput="checkPasswordStrength(this.value)"
+                            onfocus="this.parentNode.classList.add('input-focused'); document.getElementById('strengthMeter').classList.remove('hidden')"
+                            onblur="this.parentNode.classList.remove('input-focused')"
+                        >
+                        <div id="togglePassword" class="password-toggle absolute" onclick="togglePasswordVisibility()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </div>
+                        <div id="strengthMeter" class="hidden mt-2">
+                            <div class="strength-meter">
+                                <div id="strengthMeterFill" class="strength-meter-fill"></div>
+                            </div>
+                            <p id="strengthText" class="text-xs text-gray-500 mt-1">Password strength</p>
+                        </div>
+                        <div class="error-message text-red-500 text-xs mt-1"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm password</label>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 pr-10"
+                            placeholder="••••••••"
+                            onfocus="this.parentNode.classList.add('input-focused')"
+                            onblur="this.parentNode.classList.remove('input-focused')"
+                        >
+                        <div class="error-message text-red-500 text-xs mt-1"></div>
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <input 
+                        type="checkbox" 
+                        id="terms" 
+                        name="terms" 
+                        required
+                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    >
+                    <label for="terms" class="ml-2 block text-sm text-gray-700">
+                        I agree to the <a href="#" class="text-indigo-600 hover:text-indigo-500">Terms of Service</a> and <a href="#" class="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200">
+                    Create account
+                </button>
+            </form>
+
+            <div class="mt-6 text-center text-sm">
+                <p class="text-gray-600">
+                    Already have an account? 
+                    <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateEmail(input) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const errorElement = input.parentNode.querySelector('.error-message');
+            
+            if (!emailRegex.test(input.value)) {
+                errorElement.textContent = 'Please enter a valid email address';
+                return false;
+            } else {
+                errorElement.textContent = '';
+                return true;
+            }
+        }
+
+        function checkPasswordStrength(password) {
+            const strengthMeterFill = document.getElementById('strengthMeterFill');
+            const strengthText = document.getElementById('strengthText');
+            let strength = 0;
+            
+            // Check for length
+            if (password.length >= 8) strength += 1;
+            if (password.length >= 12) strength += 1;
+            
+            // Check for character variety
+            if (password.match(/(?=.*[a-z])/)) strength += 1;
+            if (password.match(/(?=.*[A-Z])/)) strength += 1;
+            if (password.match(/(?=.*[0-9])/)) strength += 1;
+            if (password.match(/(?=.*[!@#$%^&*])/)) strength += 1;
+            
+            // Update the meter
+            let percentage = (strength / 6) * 100;
+            strengthMeterFill.style.width = percentage + '%';
+            
+            // Update the color and text
+            if (percentage < 30) {
+                strengthMeterFill.style.backgroundColor = '#ef4444';
+                strengthText.textContent = 'Weak password';
+            } else if (percentage < 70) {
+                strengthMeterFill.style.backgroundColor = '#f59e0b';
+                strengthText.textContent = 'Medium strength';
+            } else {
+                strengthMeterFill.style.backgroundColor = '#10b981';
+                strengthText.textContent = 'Strong password';
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('togglePassword').querySelector('svg');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />';
+            }
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName');
+            const lastName = document.getElementById('lastName');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const terms = document.getElementById('terms');
+            
+            let isValid = true;
+            
+            // Validate first name
+            if (!firstName.value.trim()) {
+                firstName.parentNode.querySelector('.error-message').textContent = 'First name is required';
+                isValid = false;
+            } else {
+                firstName.parentNode.querySelector('.error-message').textContent = '';
+            }
+            
+            // Validate last name
+            if (!lastName.value.trim()) {
+                lastName.parentNode.querySelector('.error-message').textContent = 'Last name is required';
+                isValid = false;
+            } else {
+                lastName.parentNode.querySelector('.error-message').textContent = '';
+            }
+            
+            // Validate email
+            if (!validateEmail(email)) {
+                isValid = false;
+            }
+            
+            // Validate password
+            if (password.value.length < 8) {
+                password.parentNode.querySelector('.error-message').textContent = 'Password must be at least 8 characters';
+                isValid = false;
+            } else if (password.value !== confirmPassword.value) {
+                password.parentNode.querySelector('.error-message').textContent = '';
+                confirmPassword.parentNode.querySelector('.error-message').textContent = 'Passwords do not match';
+                isValid = false;
+            } else {
+                password.parentNode.querySelector('.error-message').textContent = '';
+                confirmPassword.parentNode.querySelector('.error-message').textContent = '';
+            }
+            
+            // Validate terms
+            if (!terms.checked) {
+                terms.nextElementSibling.style.color = '#ef4444';
+                isValid = false;
+            } else {
+                terms.nextElementSibling.style.color = '#374151';
+            }
+            
+            if (isValid) {
+                alert('Form submitted successfully!');
+                // In a real application, you would submit the form data to the server here
+                // this.submit();
+            }
+        });
+    </script>
+</body>
+</html>
+
