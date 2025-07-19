@@ -154,7 +154,11 @@ public class AuthHandler implements HttpHandler {
             return;
         }
         userDao.save(user);
-        sendResponse(exchange, 201, "User registered successfully");
+        JsonObject response = Json.createObjectBuilder()
+                .add("message", "User registered successfully")
+                .add("user", user.toJson())
+                .build();
+        sendJsonResponse(exchange, 200, response.toString());
     }
 
     /*
