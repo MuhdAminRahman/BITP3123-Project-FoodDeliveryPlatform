@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Dashboard - Demo Mode</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Restaurant Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+                <span class="nav-icon">📊</span>
+                Dashboard
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('orders')">
+                <span class="nav-icon">📋</span>
+                Orders
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('menu')">
+                <span class="nav-icon">🍽️</span>
+                Menu Management
+            </a>
+            <a href="#" class="nav-item" onclick="showSection('profile')">
+                <span class="nav-icon">🏪</span>
+                Restaurant Profile
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header class="header">
+            <h1 id="page-title">Dashboard</h1>
+            <div style="background: #fef3c7; color: #92400e; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0;">
+                <strong>🎮 DEMO MODE</strong> - Running with demo data (no database required)
+            </div>
+        </header>
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="content-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-info">
+                        <h3>12</h3>
+                        <p>Total Orders Today</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <h3>RM 156.50</h3>
+                        <p>Today's Revenue</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <h3>3</h3>
+                        <p>Pending Orders</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🍽️</div>
+                    <div class="stat-info">
+                        <h3>8</h3>
+                        <p>Menu Items</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders -->
+        <section id="orders" class="content-section">
+            <h2>Order Management</h2>
+            <div class="orders-grid">
+                <div class="order-card">
+                    <div class="order-header">
+                        <span class="order-id">Order #1001</span>
+                        <span class="order-status status-pending">PENDING</span>
+                    </div>
+                    <p><strong>Customer:</strong> John Doe</p>
+                    <p><strong>Total:</strong> RM 25.50</p>
+                    <p><strong>Items:</strong> Nasi Lemak x2, Teh Tarik x1</p>
+                </div>
+                <div class="order-card">
+                    <div class="order-header">
+                        <span class="order-id">Order #1002</span>
+                        <span class="order-status status-accepted">ACCEPTED</span>
+                    </div>
+                    <p><strong>Customer:</strong> Jane Smith</p>
+                    <p><strong>Total:</strong> RM 15.00</p>
+                    <p><strong>Items:</strong> Chicken Rice x1</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu -->
+        <section id="menu" class="content-section">
+            <h2>Menu Management</h2>
+            <div class="menu-grid">
+                <div class="menu-item-card">
+                    <img src="https://via.placeholder.com/300x200?text=Nasi+Lemak" alt="Nasi Lemak" class="menu-item-image">
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h4 class="menu-item-name">Nasi Lemak</h4>
+                            <span class="menu-item-price">RM 8.50</span>
+                        </div>
+                        <span class="menu-item-category">Main Course</span>
+                        <p class="menu-item-description">Traditional Malaysian coconut rice</p>
+                    </div>
+                </div>
+                <div class="menu-item-card">
+                    <img src="https://via.placeholder.com/300x200?text=Chicken+Rice" alt="Chicken Rice" class="menu-item-image">
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h4 class="menu-item-name">Chicken Rice</h4>
+                            <span class="menu-item-price">RM 7.00</span>
+                        </div>
+                        <span class="menu-item-category">Main Course</span>
+                        <p class="menu-item-description">Steamed chicken with fragrant rice</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile -->
+        <section id="profile" class="content-section">
+            <h2>Restaurant Profile</h2>
+            <div style="background: white; border-radius: 0.75rem; padding: 2rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); max-width: 600px;">
+                <h3>Demo Restaurant</h3>
+                <p><strong>Description:</strong> Best food in town</p>
+                <p><strong>Opening Hours:</strong> 8:00 AM - 10:00 PM</p>
+                <p><strong>Delivery Radius:</strong> 10 km</p>
+                <p><strong>Status:</strong> Active</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function showSection(section) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById(section).classList.add('active');
+            event.target.classList.add('active');
+            
+            const titles = {
+                'dashboard': 'Dashboard',
+                'orders': 'Order Management',
+                'menu': 'Menu Management',
+                'profile': 'Restaurant Profile'
+            };
+            document.getElementById('page-title').textContent = titles[section];
+        }
+    </script>
+</body>
+</html>
