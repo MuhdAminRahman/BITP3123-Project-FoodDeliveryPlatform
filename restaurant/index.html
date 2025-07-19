@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Dashboard - Food Delivery Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Restaurant Panel</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                <span class="nav-icon">📊</span>
+                Dashboard
+            </a>
+            <a href="#orders" class="nav-item" data-section="orders">
+                <span class="nav-icon">📋</span>
+                Orders
+            </a>
+            <a href="#menu" class="nav-item" data-section="menu">
+                <span class="nav-icon">🍽️</span>
+                Menu Management
+            </a>
+            <a href="#profile" class="nav-item" data-section="profile">
+                <span class="nav-icon">🏪</span>
+                Restaurant Profile
+            </a>
+            <a href="#analytics" class="nav-item" data-section="analytics">
+                <span class="nav-icon">📈</span>
+                Analytics
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="logout-btn">Logout</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1 id="page-title">Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="notification-bell">🔔</div>
+                <div class="user-profile">
+                    <span id="restaurant-name">Loading...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-info">
+                        <h3 id="total-orders">0</h3>
+                        <p>Total Orders Today</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <h3 id="total-revenue">RM 0</h3>
+                        <p>Today's Revenue</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <h3 id="pending-orders">0</h3>
+                        <p>Pending Orders</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🍽️</div>
+                    <div class="stat-info">
+                        <h3 id="menu-items">0</h3>
+                        <p>Menu Items</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-orders">
+                <h3>Recent Orders</h3>
+                <div class="orders-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-orders-tbody">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders" class="content-section">
+            <div class="section-header">
+                <h2>Order Management</h2>
+                <div class="order-filters">
+                    <select id="status-filter">
+                        <option value="">All Status</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="ACCEPTED">Accepted</option>
+                        <option value="PREPARING">Preparing</option>
+                        <option value="READY_FOR_DELIVERY">Ready for Delivery</option>
+                        <option value="ON_THE_WAY">On the Way</option>
+                        <option value="DELIVERED">Delivered</option>
+                        <option value="CANCELLED">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="orders-grid" id="orders-grid">
+                <!-- Orders will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Menu Management Section -->
+        <section id="menu" class="content-section">
+            <div class="section-header">
+                <h2>Menu Management</h2>
+                <button class="btn btn-primary" id="add-item-btn">Add New Item</button>
+            </div>
+
+            <div class="menu-grid" id="menu-grid">
+                <!-- Menu items will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Restaurant Profile Section -->
+        <section id="profile" class="content-section">
+            <div class="profile-form">
+                <h2>Restaurant Profile</h2>
+                <form id="restaurant-form">
+                    <div class="form-group">
+                        <label for="restaurant-name-input">Restaurant Name</label>
+                        <input type="text" id="restaurant-name-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="restaurant-description">Description</label>
+                        <textarea id="restaurant-description" rows="4"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="opening-time">Opening Time</label>
+                            <input type="time" id="opening-time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="closing-time">Closing Time</label>
+                            <input type="time" id="closing-time" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery-radius">Delivery Radius (km)</label>
+                        <input type="number" id="delivery-radius" min="1" max="50" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="logo-url">Logo URL</label>
+                        <input type="url" id="logo-url">
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="is-active">
+                            Restaurant is Active
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="content-section">
+            <h2>Analytics & Reports</h2>
+            <div class="analytics-grid">
+                <div class="chart-container">
+                    <h3>Daily Orders</h3>
+                    <canvas id="orders-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Revenue Trend</h3>
+                    <canvas id="revenue-chart"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add/Edit Menu Item Modal -->
+    <div id="menu-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Menu Item</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="menu-item-form">
+                <div class="form-group">
+                    <label for="item-name">Item Name</label>
+                    <input type="text" id="item-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="item-description">Description</label>
+                    <textarea id="item-description" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item-price">Price (RM)</label>
+                        <input type="number" id="item-price" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-category">Category</label>
+                        <select id="item-category" required>
+                            <option value="">Select Category</option>
+                            <option value="Appetizer">Appetizer</option>
+                            <option value="Main Course">Main Course</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Beverage">Beverage</option>
+                            <option value="Side Dish">Side Dish</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="item-image">Image URL</label>
+                    <input type="url" id="item-image">
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="item-available" checked>
+                        Available
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
