@@ -119,6 +119,24 @@
         .nav-links a:hover {
             color: var(--primary);
         }
+
+        .sign-in {
+            margin-left: auto; /* Pushes the button to the right */
+        }
+
+        .sign-in a {
+            background: var(--primary);
+            padding: 12px 24px;
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sign-in a:hover {
+            background: #1d4ed8;
+        }
         
         /* Hero */
         .hero {
@@ -325,9 +343,13 @@
                 <div class="nav-links">
                     <a href="#features">Why SkyBite</a>
                     <a href="#how-it-works">How It Works</a>
-                    <a href="order.html">Order Now</a>
                     <a href="#contact">Contact</a>
                 </div>
+                <div class="sign-in">
+                <a href="login.html" class="btn">Sign In</a>
+
+</div>
+
             </nav>
         </div>
     </header>
@@ -338,7 +360,6 @@
             <div class="hero-content">
                 <h1>Food delivered by drone in minutes</h1>
                 <p>SkyBite brings your favorite meals flying to your door with our cutting-edge drone delivery technology. Fast, reliable, and environmentally friendly.</p>
-                <a href="order.html" class="btn">Order Now</a>
             </div>
             <div class="hero-image">
                 <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/28e00bb3-7f5a-40cc-a6dc-e4b9904aa141.png" alt="Futuristic drone with food container flying over a cityscape with blue skies and modern buildings" />
@@ -424,8 +445,6 @@
     </footer>
     
     <script>
-        
-        
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -438,4 +457,3 @@
     </script>
 </body>
 </html>
-
