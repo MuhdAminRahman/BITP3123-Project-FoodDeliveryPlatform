@@ -42,8 +42,8 @@ public class MyServer {
         handlerMap.put("/api/users/{id}", new AuthMiddleware(userHandler, "CUSTOMER","RESTAURANT","DELIVERY_PARTNER"));
         
         // Restaurant endpoints
-        handlerMap.put("/api/restaurants", new AuthMiddleware(restaurantHandler, "RESTAURANT"));
-        handlerMap.put("/api/restaurants/{id}", new AuthMiddleware(restaurantHandler, "RESTAURANT"));
+        handlerMap.put("/api/restaurants", new AuthMiddleware(restaurantHandler, "CUSTOMER","RESTAURANT"));
+        handlerMap.put("/api/restaurants/{id}", new AuthMiddleware(restaurantHandler, "CUSTOMER","RESTAURANT"));
         handlerMap.put("/api/restaurants/{id}/menu", new AuthMiddleware(foodItemHandler, "CUSTOMER","RESTAURANT"));
         
         // Food item endpoints
