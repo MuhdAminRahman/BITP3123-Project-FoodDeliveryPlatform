@@ -1,7 +1,6 @@
 package com.fooddeliveryplatform.config;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -11,38 +10,42 @@ public class AppConfig {
     private static JsonObject config;
     
     static {
-        try (InputStream is = Files.newInputStream(Paths.get("config.json"));
-            JsonReader reader = Json.createReader(is)) {
-            JsonObjectBuilder builder = Json.createObjectBuilder(reader.readObject());
-            
-            // Override with environment variables if they exist
+        try {
+            // Try environment variables first
             if (System.getenv("DATABASE_URL") != null) {
-                builder.add("database", Json.createObjectBuilder()
-                    .add("url", getEnvOrDefault("DATABASE_URL", ""))
-                    .add("username", getEnvOrDefault("DATABASE_USERNAME", ""))
-                    .add("password", getEnvOrDefault("DATABASE_PASSWORD", "")));
-            }
-            
-            if (System.getenv("PORT") != null) {
-                builder.add("server", Json.createObjectBuilder()
-                    .add("port", Integer.parseInt(getEnvOrDefault("PORT", "8080"))));
+                config = Json.createObjectBuilder()
+                    .add("database", Json.createObjectBuilder()
+                        .add("url", System.getenv("DATABASE_URL"))
+                        .add("username", System.getenv("DATABASE_USERNAME"))
+                        .add("password", System.getenv("DATABASE_PASSWORD")))
+                    .add("server", Json.createObjectBuilder()
+                        .add("port", Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"))))
+                    .add("security", Json.createObjectBuilder()
+                        .add("jwtSecret", System.getenv("JWT_SECRET"))
+                        .add("jwtExpirationMs", Long.parseLong(System.getenv().getOrDefault("JWT_EXPIRATION_MS", "86400000")))
+                        .add("passwordPepper", System.getenv("PASSWORD_PEPPER")))
+                    .build();
+            } 
+            // Fall back to config file
+            else {
+                try (InputStream is = Files.newInputStream(Paths.get("config.json"));
+                     JsonReader reader = Json.createReader(is)) {
+                    config = reader.readObject();
+                } catch (Exception e) {
+                    // Final fallback to classpath resource
+                    try (InputStream is = AppConfig.class.getClassLoader()
+                            .getResourceAsStream("config.json");
+                         JsonReader reader = Json.createReader(is)) {
+                        config = reader.readObject();
+                    } catch (Exception ex) {
+                        throw new RuntimeException("Failed to load configuration", ex);
+                    }
+                }
             }
         } catch (Exception e) {
-            // Fallback to loading from resources if file not found
-            try (InputStream is = AppConfig.class.getClassLoader()
-                    .getResourceAsStream("config.json");
-                 JsonReader reader = Json.createReader(is)) {
-                config = reader.readObject();
-            } catch (Exception ex) {
-                throw new RuntimeException("Failed to load configuration", ex);
-            }
+            throw new RuntimeException("Configuration initialization failed", e);
         }
     }
-    private static String getEnvOrDefault(String envVar, String defaultValue) {
-        String value = System.getenv(envVar);
-        return value != null ? value : defaultValue;
-    }
-
     
     public static String getDatabaseUrl() {return config.getJsonObject("database").getString("url");}
     public static String getDatabaseUsername() {return config.getJsonObject("database").getString("username");}
