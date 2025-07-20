@@ -27,6 +27,5 @@ replay_pid*
 .vscode/*
 
 #private files
-myproject/src/main/resources/config.json
 myproject/target/classes/config.json
 myproject/target/classes/db/migration/V1__Initial_schema.sql
