@@ -1,0 +1,19 @@
+{
+  "database": {
+    "url": "${DATABASE_URL}",
+    "username": "${DATABASE_USERNAME}",
+    "password": "${DATABASE_PASSWORD}",
+    "migration": {
+      "locations": ["db/migration"],
+      "baselineVersion": "1.0.0"
+    }
+  },
+  "server": {
+    "port": "${PORT:8080}"
+  },
+  "security": {
+    "jwtSecret": "${JWT_SECRET}",
+    "jwtExpirationMs": "${JWT_EXPIRATION_MS:86400000}",
+    "passwordPepper": "${PASSWORD_PEPPER}"
+  }
+}
