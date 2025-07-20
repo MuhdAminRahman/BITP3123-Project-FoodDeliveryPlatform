@@ -1159,6 +1159,36 @@ users.role:
 
 #### • DELIVERY_PARTNER
 
+### SUMARRY FOR EVERY PART: 
+### Frontend for Customer
+The Frontend for Customer is where customers interact with the platform. Key features include:
+Menu Browsing: Customers can view food options, descriptions, prices, and availability.
+Order Placement: Add items to the cart, customize orders, and place the order.
+Order Tracking: Track the status of orders in real-time (e.g., in transit, delivered).
+Payment Processing: Secure options for payment (credit card, PayPal, cash).
+Order History/Profile: View past orders, saved payment methods, and addresses.
 
+### Frontend for Restaurant
+The Frontend for Restaurant allows restaurant staff to manage operations. Key features include:
+Menu Management: Update the menu, add/remove items, change prices.
+Order Management: View and manage orders, update status (e.g., preparing, delivered).
+Analytics Dashboard: Access insights on sales, popular items, and customer reviews.
+Notifications: Get alerts for new orders and completed payments.
 
+### Backend for Handling All Logic
+The Backend manages the platform's operations and ensures smooth data flow. Key features include:
+Database Management: Stores and retrieves data (orders, customers, payments, etc.).
+Order Processing: Handles orders, assigns them to restaurants, and updates statuses.
+Payment Handling: Processes payments securely and links them to orders.
+Authentication and Security: Manages user logins, encrypts data, and ensures security (JWT).
+API Integration: Communicates with the frontend to handle order placement and updates.
+
+### How They All Connect
+Customer Frontend to Backend: Customers place orders via the frontend, which the backend processes. The backend updates the database and sends order details to the restaurant.
+Restaurant Frontend to Backend: Restaurants update menus and order statuses on the frontend, which the backend processes and stores.
+Backend to Database: The backend stores all data (orders, food items, payments) in the database and ensures it’s up-to-date.
+Backend to Frontend: The backend sends updated data (order status, menu items) to the frontends, ensuring smooth customer and restaurant interactions.
+
+### CONCLUSION
+This project helped us apply the knowledge we gained during our studies to create a practical and efficient Food Delivery Platform. We’ve gained experience in system design, database management, security implementation, and UI/UX development.
 
