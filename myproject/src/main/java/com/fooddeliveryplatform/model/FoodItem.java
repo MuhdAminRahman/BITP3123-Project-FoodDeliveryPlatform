@@ -80,7 +80,7 @@ public class FoodItem {
     }
 
 
-
+    //get request
     public JsonObject toJson() {
         JsonObject json = Json.createObjectBuilder()
             .add("food_Id", food_Id)
@@ -95,7 +95,7 @@ public class FoodItem {
         return json;
     }
     
-
+    //post request
     public static FoodItem fromJson(JsonObject json) {
 
         FoodItem foodItem = new FoodItem();
