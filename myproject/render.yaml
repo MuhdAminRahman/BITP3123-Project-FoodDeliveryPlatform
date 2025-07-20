@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: food-delivery-backend
+    runtime: java
+    buildCommand: mvn clean package
+    startCommand: java -jar target/myproject-1.0-SNAPSHOT.jar
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: DATABASE_URL
+        fromDatabase:
+          name: food-delivery-db
+          property: connectionString
+      - key: DATABASE_USERNAME
+        fromDatabase:
+          name: food-delivery-db
+          property: username
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: food-delivery-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PASSWORD_PEPPER
+        generateValue: true
+
+databases:
+  - name: food-delivery-db
+    databaseName: food_delivery
+    user: food_delivery_user
+    plan: free

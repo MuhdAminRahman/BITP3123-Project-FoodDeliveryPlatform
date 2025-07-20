@@ -1,6 +1,7 @@
 package com.fooddeliveryplatform.config;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -11,8 +12,21 @@ public class AppConfig {
     
     static {
         try (InputStream is = Files.newInputStream(Paths.get("config.json"));
-             JsonReader reader = Json.createReader(is)) {
-            config = reader.readObject();
+            JsonReader reader = Json.createReader(is)) {
+            JsonObjectBuilder builder = Json.createObjectBuilder(reader.readObject());
+            
+            // Override with environment variables if they exist
+            if (System.getenv("DATABASE_URL") != null) {
+                builder.add("database", Json.createObjectBuilder()
+                    .add("url", getEnvOrDefault("DATABASE_URL", ""))
+                    .add("username", getEnvOrDefault("DATABASE_USERNAME", ""))
+                    .add("password", getEnvOrDefault("DATABASE_PASSWORD", "")));
+            }
+            
+            if (System.getenv("PORT") != null) {
+                builder.add("server", Json.createObjectBuilder()
+                    .add("port", Integer.parseInt(getEnvOrDefault("PORT", "8080"))));
+            }
         } catch (Exception e) {
             // Fallback to loading from resources if file not found
             try (InputStream is = AppConfig.class.getClassLoader()
@@ -24,6 +38,11 @@ public class AppConfig {
             }
         }
     }
+    private static String getEnvOrDefault(String envVar, String defaultValue) {
+        String value = System.getenv(envVar);
+        return value != null ? value : defaultValue;
+    }
+
     
     public static String getDatabaseUrl() {return config.getJsonObject("database").getString("url");}
     public static String getDatabaseUsername() {return config.getJsonObject("database").getString("username");}
