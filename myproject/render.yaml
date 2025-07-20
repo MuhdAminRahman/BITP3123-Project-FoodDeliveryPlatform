@@ -1,9 +1,7 @@
 services:
   - type: web
     name: food-delivery-backend
-    runtime: java
-    buildCommand: mvn clean package
-    startCommand: java -jar target/myproject-1.0-SNAPSHOT.jar
+    runtime: docker
     envVars:
       - key: PORT
         value: 8080
